@@ -1,6 +1,9 @@
 import React from 'react';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import GlobalStyle from 'theme/GlobalStyle';
+import { ThemeProvider } from 'styled-components';
+import DashboardPage from 'pages/DashboardPage';
+import { theme } from 'theme/theme';
 
 const Root = () => (
   <HelmetProvider>
@@ -12,7 +15,9 @@ const Root = () => (
       />
     </Helmet>
     <GlobalStyle />
-    <h1>Hello world</h1>
+    <ThemeProvider theme={theme}>
+      <DashboardPage />
+    </ThemeProvider>
   </HelmetProvider>
 );
 
