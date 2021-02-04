@@ -48,7 +48,7 @@ const StyledText = styled.span`
   color: ${({ theme }) => theme.color.grey};
 `;
 
-const calculateInputWidth = (value) => value * 1.5 + 180;
+const calculateInputWidth = (value) => value * 1.5 + 210;
 
 const ScalableInput = ({ children, isKcal, label, labelFor, value, className }) => (
   <StyledInputWrapper kcal={isKcal} width={calculateInputWidth(value)} className={className}>

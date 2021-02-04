@@ -1,12 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CardPhoto from 'assets/photos/anna-pelzer-unsplash.jpg';
 import CaloriesInfo from 'components/atoms/CaloriesInfo/CaloriesInfo';
 import Heading from 'components/atoms/Heading/Heading';
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
-import MacroGroup from 'components/molecules/MacroGroup/MacroGroup';
 import chevronIcon from 'assets/icons/chevron-right.svg';
 import ButtonIcon from 'components/atoms/ButtonIcon/ButtonIcon';
+import { Link, useRouteMatch } from 'react-router-dom';
+import { toLowerCaseWithDash } from 'utilities/functions';
+import MacroInfo from 'components/atoms/MacroInfo/MacroInfo';
 
 const StyledWrapper = styled.div`
   width: 400px;
@@ -34,39 +37,47 @@ const StyledCaloriesInfo = styled(CaloriesInfo)`
 
 const StyledFlexWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+
+  & > * {
+    margin-right: 10px;
+  }
 `;
 
-const dummyMacros = [
-  {
-    value: 25,
-    desc: 'Protein',
-  },
-  {
-    value: 17,
-    desc: 'Fat',
-  },
-  {
-    value: 60,
-    desc: 'Carbs',
-  },
-];
+const StyledButtonIcon = styled(ButtonIcon)`
+  margin-left: auto;
+`;
 
-const Card = () => (
-  <StyledWrapper>
-    <StyledImage src={CardPhoto} alt="Card photo" />
-    <StyledCaloriesInfo value={725} />
-    <Heading>Antipasti rigatoni</Heading>
-    <Paragraph>
-      A great Italian-inspired recipe for a speedy, healthy supper. Using the best Italian antipasti
-      ingredients and combining it with pasta is ideal for a mid-week meal.
-    </Paragraph>
-    <StyledFlexWrapper>
-      <MacroGroup macros={dummyMacros} gap="5px" />
-      <ButtonIcon icon={chevronIcon} />
-    </StyledFlexWrapper>
-  </StyledWrapper>
-);
+const Card = ({ name, desc, kcal, protein, fat, carbs }) => {
+  const match = useRouteMatch();
+
+  return (
+    <StyledWrapper>
+      <StyledImage src={CardPhoto} alt="Card photo" />
+      <StyledCaloriesInfo value={kcal} />
+      <Heading>{name}</Heading>
+      <Paragraph>{desc}</Paragraph>
+      <StyledFlexWrapper>
+        <MacroInfo value={protein} desc="Protein" />
+        <MacroInfo value={fat} desc="Fat" />
+        <MacroInfo value={carbs} desc="Carbs" />
+        <StyledButtonIcon
+          as={Link}
+          icon={chevronIcon}
+          to={`${match.url}/${toLowerCaseWithDash(name)}`}
+        />
+      </StyledFlexWrapper>
+    </StyledWrapper>
+  );
+};
+
+Card.propTypes = {
+  name: PropTypes.string.isRequired,
+  desc: PropTypes.string.isRequired,
+  kcal: PropTypes.string.isRequired,
+  protein: PropTypes.string.isRequired,
+  fat: PropTypes.string.isRequired,
+  carbs: PropTypes.string.isRequired,
+};
 
 export default Card;

@@ -6,7 +6,7 @@ const Template = (args) => <CaloriesInfo {...args} />;
 export const Primary = Template.bind({});
 
 Primary.args = {
-  value: 725,
+  value: '725',
 };
 
 export default {

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { lighten } from 'polished';
+import { lighten, darken } from 'polished';
 
 const Button = styled.button`
   display: block;
@@ -13,18 +13,30 @@ const Button = styled.button`
   font-size: ${({ theme }) => theme.size.m};
   font-family: inherit;
   cursor: pointer;
+  margin-bottom: 15px;
 
   &:hover {
     background: ${({ theme }) => lighten(0.05, theme.color.lightGreen)};
   }
 
-  ${({ secondary }) =>
+  ${({ secondary, theme }) =>
     secondary &&
     css`
-      background: ${({ theme }) => theme.color.aquamarine};
+      background: ${theme.color.aquamarine};
 
       &:hover {
-        background: ${({ theme }) => lighten(0.08, theme.color.aquamarine)};
+        background: ${lighten(0.08, theme.color.aquamarine)};
+      }
+    `}
+
+  ${({ tertiary, theme }) =>
+    tertiary &&
+    css`
+      color: ${theme.color.white};
+      background: ${theme.color.red};
+
+      &:hover {
+        background: ${darken(0.05, theme.color.red)};
       }
     `}
 `;

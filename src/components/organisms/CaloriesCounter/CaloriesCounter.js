@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Heading from 'components/atoms/Heading/Heading';
 import CounterItem from 'components/molecules/CounterItem/CounterItem';
-import MacroGroup from 'components/molecules/MacroGroup/MacroGroup';
+import MacroInfo from 'components/atoms/MacroInfo/MacroInfo';
 import Button from 'components/atoms/Button/Button';
 import CaloriesInfo from 'components/atoms/CaloriesInfo/CaloriesInfo';
 
@@ -25,20 +25,6 @@ const MacroWrapper = styled.div`
   justify-content: space-evenly;
   align-items: center;
 `;
-const dummyMacros = [
-  {
-    value: 252,
-    desc: 'Protein',
-  },
-  {
-    value: 173,
-    desc: 'Fat',
-  },
-  {
-    value: 604222,
-    desc: 'Carbs',
-  },
-];
 
 const CalorieCounter = () => (
   <StyledWrapper>
@@ -49,8 +35,11 @@ const CalorieCounter = () => (
 
     <Heading as="h3">Total</Heading>
     <MacroWrapper>
-      <CaloriesInfo value={725} />
-      <MacroGroup macros={dummyMacros} gap="10px" />
+      <CaloriesInfo value="725" />
+      <MacroInfo kcal value={234} desc="Calories" />
+      <MacroInfo big value={23} desc="Protein" />
+      <MacroInfo big value={3} desc="Fat" />
+      <MacroInfo big value={15} desc="Carbs" />
     </MacroWrapper>
     <Button>Add all to shopping list</Button>
   </StyledWrapper>

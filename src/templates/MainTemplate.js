@@ -1,11 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import GlobalStyle from 'theme/GlobalStyle';
 import { ThemeProvider } from 'styled-components';
-import DashboardPage from 'pages/DashboardPage';
 import { theme } from 'theme/theme';
 
-const Root = () => (
+const MainTemplate = ({ children }) => (
   <HelmetProvider>
     <Helmet>
       <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -15,10 +15,12 @@ const Root = () => (
       />
     </Helmet>
     <GlobalStyle />
-    <ThemeProvider theme={theme}>
-      <DashboardPage />
-    </ThemeProvider>
+    <ThemeProvider theme={theme}>{children}</ThemeProvider>
   </HelmetProvider>
 );
 
-export default Root;
+MainTemplate.propTypes = {
+  children: PropTypes.element.isRequired,
+};
+
+export default MainTemplate;

@@ -8,7 +8,7 @@ export const Primary = Template.bind({});
 Primary.args = {
   big: false,
   kcal: false,
-  value: 25,
+  value: '25',
   desc: 'protein',
 };
 

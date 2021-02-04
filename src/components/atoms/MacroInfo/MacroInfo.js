@@ -15,7 +15,7 @@ const Rectangle = styled.div`
   ${({ big }) =>
     big &&
     css`
-      height: 80px;
+      padding: 10px 25px;
     `}
 `;
 
@@ -71,7 +71,7 @@ const MacroInfo = ({ big, kcal, value, desc, className }) => {
 MacroInfo.propTypes = {
   big: PropTypes.bool,
   kcal: PropTypes.bool,
-  value: PropTypes.number.isRequired,
+  value: PropTypes.string.isRequired,
   desc: PropTypes.string.isRequired,
   className: PropTypes.string,
 };

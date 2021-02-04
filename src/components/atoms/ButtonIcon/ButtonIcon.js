@@ -28,11 +28,12 @@ const ButtonIcon = styled.button`
       width: 70px;
       height: 70px;
       border-radius: 10px;
-      background: url(${({ icon }) => icon}) 50% 50% / 80% no-repeat,
+      background: url(${({ icon }) => icon}) 50% 50% / 70% no-repeat,
         ${({ theme }) => theme.color.orange};
 
       &:hover {
-        background-color: ${({ theme }) => darken(0.1, theme.color.orange)};
+        background: url(${({ icon }) => icon}) 50% 50% / 80% no-repeat,
+          ${({ theme }) => darken(0.1, theme.color.orange)};
       }
     `}
 

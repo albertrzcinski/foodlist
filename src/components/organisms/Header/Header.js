@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import Input from 'components/atoms/Input/Input';
+import { NavLink } from 'react-router-dom';
+import { routes } from 'routes';
 
 const List = styled.ul`
   list-style: none;
@@ -14,8 +16,13 @@ const List = styled.ul`
 
 const ListItem = styled.li`
   position: relative;
-  padding: 10px 20px;
-  margin: 10px 30px;
+  padding: 7px 0;
+  margin: 10px 40px;
+`;
+
+const StyledNavLink = styled(NavLink)`
+  color: inherit;
+  text-decoration: none;
 
   &.active {
     &::after {
@@ -40,8 +47,9 @@ const Logo = styled.h1`
 `;
 
 const HeaderWrapper = styled.header`
-  /* display: flex; */
-  padding: 0 70px 0 20px;
+  display: flex;
+  align-items: center;
+  padding-right: 50px;
 `;
 
 const StyledLabel = styled.label`
@@ -65,9 +73,15 @@ const Header = () => (
         <ListItem>
           <Logo> FoodList </Logo>
         </ListItem>
-        <ListItem className="active">Breakfast</ListItem>
-        <ListItem>Lunch</ListItem>
-        <ListItem>Dinner</ListItem>
+        <ListItem>
+          <StyledNavLink to={routes.breakfast}>Breakfast</StyledNavLink>
+        </ListItem>
+        <ListItem>
+          <StyledNavLink to={routes.lunch}>Lunch</StyledNavLink>
+        </ListItem>
+        <ListItem>
+          <StyledNavLink to={routes.dinner}>Dinner</StyledNavLink>
+        </ListItem>
       </List>
     </nav>
     <InputWrapper>

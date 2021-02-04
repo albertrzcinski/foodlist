@@ -7,6 +7,7 @@ const Input = styled.input`
   border: 2px solid ${({ theme }) => theme.color.borderGreen};
   transition: all 0.2s;
   touch-action: manipulation;
+  width: 100%;
 
   ${({ search }) =>
     search &&

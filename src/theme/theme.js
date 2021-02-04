@@ -15,14 +15,15 @@ export const theme = {
     aquamarine: '#6ce9f0',
     black: 'hsl(0,0%,0%,0.7)',
     grey: 'hsl(0,0%,0%,0.3)',
-    red: '#ff0000',
+    white: 'hsl(0,0%,100%)',
+    red: 'hsl(0,70%,50%)',
   },
   size: {
     xs: '0.9rem',
     s: '1.4rem',
     m: '1.8rem',
     l: '2.4rem',
-    xl: '4.8rem',
-    xxl: '6.4rem',
+    xl: '3.8rem',
+    xxl: '4.8rem',
   },
 };
