@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import DashboadContext from 'context';
 import { TYPE_OF_MEALS } from 'utilities/constants';
 import { matchNumbers } from 'utilities/functions';
+import { connect } from 'react-redux';
 
 const StyledLabel = styled.label`
   position: absolute;
@@ -73,20 +74,11 @@ const yupShape = Yup.number()
   .required('Required!')
   .typeError('It must be a number!');
 
-const addItemSchema = Yup.object().shape({
-  name: Yup.string().min(3, 'Too short!').required('Required!'),
-  desc: Yup.string().min(10, 'Type a little more!').required('Required!'),
-  time: yupShape,
-  servings: yupShape,
-  kcal: yupShape,
-  protein: yupShape,
-  fat: yupShape,
-  carbs: yupShape,
-  type: Yup.string().required('Required!'),
-});
-
-const AddItemForm = ({ onSubmitFn }) => {
+const AddItemForm = ({ onSubmitFn, meals }) => {
   const context = useContext(DashboadContext);
+
+  const names = meals.reduce((acc, curr) => acc.concat(curr.name), []).join(' *$| *');
+  const regex = new RegExp(`^(?! *${names} *$).*`, 'gi');
 
   return (
     <Formik
@@ -101,7 +93,20 @@ const AddItemForm = ({ onSubmitFn }) => {
         carbs: 0,
         type: '',
       }}
-      validationSchema={addItemSchema}
+      validationSchema={Yup.object().shape({
+        name: Yup.string()
+          .min(3, 'Too short!')
+          .required('Required!')
+          .matches(regex, { message: 'Name already exist!' }),
+        desc: Yup.string().min(10, 'Type a little more!').required('Required!'),
+        time: yupShape,
+        servings: yupShape,
+        kcal: yupShape,
+        protein: yupShape,
+        fat: yupShape,
+        carbs: yupShape,
+        type: Yup.string().required('Required!'),
+      })}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         const content = {
           ...values,
@@ -276,8 +281,36 @@ const AddItemForm = ({ onSubmitFn }) => {
   );
 };
 
+const stringProp = PropTypes.string.isRequired;
+
 AddItemForm.propTypes = {
   onSubmitFn: PropTypes.func.isRequired,
+  meals: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: stringProp,
+      desc: stringProp,
+      time: stringProp,
+      servings: stringProp,
+      kcal: stringProp,
+      protein: stringProp,
+      fat: stringProp,
+      carbs: stringProp,
+      type: stringProp,
+      ingredients: PropTypes.arrayOf(
+        PropTypes.shape({
+          name: stringProp,
+          quantity: stringProp,
+        }),
+      ),
+      method: PropTypes.string,
+    }),
+  ),
 };
 
-export default AddItemForm;
+AddItemForm.defaultProps = {
+  meals: [],
+};
+
+const mapStateToProps = ({ meals }) => ({ meals });
+
+export default connect(mapStateToProps, null)(AddItemForm);

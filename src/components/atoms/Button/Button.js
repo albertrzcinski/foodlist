@@ -13,7 +13,7 @@ const Button = styled.button`
   font-size: ${({ theme }) => theme.size.m};
   font-family: inherit;
   cursor: pointer;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
 
   &:hover {
     background: ${({ theme }) => lighten(0.05, theme.color.lightGreen)};

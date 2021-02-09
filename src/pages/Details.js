@@ -20,6 +20,8 @@ const Details = ({ meal }) => {
         protein={item.protein}
         fat={item.fat}
         carbs={item.carbs}
+        ingredients={item.ingredients}
+        method={item.method}
       />
     );
   }
@@ -47,6 +49,7 @@ Details.propTypes = {
           quantity: stringProp,
         }),
       ),
+      method: PropTypes.string,
     }),
   ).isRequired,
 };

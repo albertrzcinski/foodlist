@@ -25,7 +25,7 @@ const StyledHeading = styled(Heading)`
 
 const NewItemSidebar = ({ className, addMeal }) => (
   <StyledWrapper className={className}>
-    <StyledHeading>Add new recipe</StyledHeading>
+    <StyledHeading>Add new meal</StyledHeading>
     <AddItemForm onSubmitFn={addMeal} />
   </StyledWrapper>
 );

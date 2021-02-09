@@ -1,4 +1,4 @@
-import { ADD_ITEM, DELETE_ITEM } from 'redux/actionTypes';
+import { ADD_ITEM, DELETE_ITEM, EDIT_ITEM } from 'redux/actionTypes';
 
 const initialState = {
   meals: [
@@ -22,6 +22,8 @@ const initialState = {
           quantity: '170g',
         },
       ],
+      method: `1. Prepare ingredients.
+      2. Cook meal.`,
     },
   ],
 };
@@ -36,6 +38,25 @@ const rootReducer = (state = initialState, { type, payload }) => {
       return {
         meals: state.meals.filter((item) => item.name !== payload.mealName),
       };
+    case EDIT_ITEM: {
+      const [meal] = state.meals.filter((item) => item.name === payload.mealName);
+
+      if (meal) {
+        const otherMeals = state.meals.filter((item) => item.name !== payload.mealName);
+        const { content } = payload;
+        const updatedMeal = {
+          ...meal,
+          ...content,
+        };
+        return {
+          meals: [...otherMeals, updatedMeal],
+        };
+      }
+
+      return {
+        meals: [...state.meals],
+      };
+    }
     default:
       return state;
   }

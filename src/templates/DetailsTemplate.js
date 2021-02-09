@@ -10,8 +10,10 @@ import Paragraph from 'components/atoms/Paragraph/Paragraph';
 import MacroInfo from 'components/atoms/MacroInfo/MacroInfo';
 import photo from 'assets/photos/anna-pelzer-unsplash.jpg';
 import { connect } from 'react-redux';
-import { deleteMeal as deleteMealAction } from 'redux/actions';
+import { deleteMeal as deleteMealAction, editMeal as editMealAction } from 'redux/actions';
 import ConfirmModal from 'components/organisms/ConfimModal/ConfirmModal';
+import AddIngredientsBox from 'components/molecules/AddIngredientsBox/AddIngredientsBox';
+// import Input from 'components/atoms/Input/Input';
 
 const StyledWrapper = styled.main`
   padding: 30px 550px 30px 100px;
@@ -74,6 +76,22 @@ const StyledMacroWrapper = styled.div`
   }
 `;
 
+const StyledTextArea = styled.textarea`
+  padding: 14px 20px;
+  font-family: 'Montserrat', sans-serif;
+  width: 500px;
+  height: 160px;
+  resize: none;
+  overflow: auto;
+  margin-right: 10px;
+`;
+
+const MethodWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 20px;
+`;
+
 const DetailsTemplate = ({
   name,
   time,
@@ -84,8 +102,14 @@ const DetailsTemplate = ({
   fat,
   carbs,
   deleteMeal,
+  editMeal,
+  ingredients,
+  method,
 }) => {
   const [confirmModalVisability, setConfirmModalVisability] = useState(false);
+  const [textareaValue, setTextareaValue] = useState(method);
+
+  const handleTextareaChange = (e) => setTextareaValue(e.currentTarget.value);
 
   return (
     <>
@@ -122,6 +146,30 @@ const DetailsTemplate = ({
               <MacroInfo big value={carbs} desc="Carbs" />
             </StyledMacroWrapper>
 
+            <StyledHeading sizeL>Ingredients</StyledHeading>
+
+            <AddIngredientsBox
+              mealName={name}
+              editMealFn={editMeal}
+              ingredientsProp={ingredients}
+            />
+
+            <StyledHeading sizeL>Method</StyledHeading>
+
+            <MethodWrapper>
+              <StyledTextArea
+                as="textarea"
+                id="method"
+                name="method"
+                type="text"
+                placeholder="Enter method to prepare this meal..."
+                value={textareaValue}
+                onChange={handleTextareaChange}
+              />
+
+              <Button onClick={() => editMeal(name, { method: textareaValue })}> Save </Button>
+            </MethodWrapper>
+
             <Button tertiary onClick={() => setConfirmModalVisability(true)}>
               Delete meal
             </Button>
@@ -130,6 +178,11 @@ const DetailsTemplate = ({
       </UserTemplate>
     </>
   );
+};
+
+DetailsTemplate.defaultProps = {
+  ingredients: [],
+  method: '',
 };
 
 DetailsTemplate.propTypes = {
@@ -142,10 +195,19 @@ DetailsTemplate.propTypes = {
   fat: PropTypes.string.isRequired,
   carbs: PropTypes.string.isRequired,
   deleteMeal: PropTypes.func.isRequired,
+  editMeal: PropTypes.func.isRequired,
+  ingredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      quantity: PropTypes.string.isRequired,
+    }),
+  ),
+  method: PropTypes.string,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   deleteMeal: (mealName) => dispatch(deleteMealAction(mealName)),
+  editMeal: (mealName, content) => dispatch(editMealAction(mealName, content)),
 });
 
 export default connect(null, mapDispatchToProps)(DetailsTemplate);
