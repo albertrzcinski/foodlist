@@ -40,7 +40,7 @@ const CounterItem = ({ name, className }) => (
 CounterItem.propTypes = {
   name: PropTypes.string.isRequired,
   className: PropTypes.string,
-  // data: PropTypes.objectOf().shape({
+  // data: PropTypes.shape({
   //   protein: PropTypes.number.isRequired,
   //   fat: PropTypes.number.isRequired,
   //   carbs: PropTypes.number.isRequired,

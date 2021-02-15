@@ -4,25 +4,31 @@ import DashboardTemplate from 'templates/DashboardTemplate';
 import Card from 'components/organisms/Card/Card';
 import { connect } from 'react-redux';
 import { TYPE_OF_MEALS } from 'utilities/constants';
+import { Redirect } from 'react-router-dom';
+import { routes } from 'routes';
 
-const Dinner = ({ dinnerMeals }) => (
-  <DashboardTemplate>
-    <>
-      {dinnerMeals.map(({ name, desc, kcal, protein, fat, carbs }) => (
-        <Card
-          key={name}
-          name={name}
-          desc={desc}
-          kcal={kcal}
-          protein={protein}
-          fat={fat}
-          carbs={carbs}
-        />
-      ))}
-    </>
-  </DashboardTemplate>
-);
-
+const Dinner = ({ dinnerMeals, uid }) => {
+  if (!uid) {
+    return <Redirect to={routes.home} />;
+  }
+  return (
+    <DashboardTemplate>
+      <>
+        {dinnerMeals.map(({ name, desc, kcal, protein, fat, carbs }) => (
+          <Card
+            key={name}
+            name={name}
+            desc={desc}
+            kcal={kcal}
+            protein={protein}
+            fat={fat}
+            carbs={carbs}
+          />
+        ))}
+      </>
+    </DashboardTemplate>
+  );
+};
 const stringProp = PropTypes.string.isRequired;
 
 Dinner.propTypes = {
@@ -45,15 +51,17 @@ Dinner.propTypes = {
       ),
     }),
   ),
+  uid: PropTypes.string,
 };
 
 Dinner.defaultProps = {
   dinnerMeals: [],
+  uid: null,
 };
 
-const mapStateToProps = ({ meals }) => {
+const mapStateToProps = ({ foodlist: { meals }, firebase: { auth } }) => {
   const dinnerMeals = meals.filter((item) => item.type === TYPE_OF_MEALS.DINNER);
-  return { dinnerMeals };
+  return { dinnerMeals, uid: auth.uid };
 };
 
 export default connect(mapStateToProps, null)(Dinner);

@@ -1,8 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Input from 'components/atoms/Input/Input';
 import { NavLink } from 'react-router-dom';
 import { routes } from 'routes';
+import Logo from 'components/atoms/Logo/Logo';
+import { connect } from 'react-redux';
+import { logOut as logOutAction } from 'redux/actions';
 
 const List = styled.ul`
   list-style: none;
@@ -38,14 +42,6 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
-const Logo = styled.h1`
-  margin: 0;
-  font-size: 3.6rem;
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-  font-style: italic;
-  color: ${({ theme }) => theme.color.lightGreen};
-`;
-
 const HeaderWrapper = styled.header`
   display: flex;
   align-items: center;
@@ -66,12 +62,20 @@ const InputWrapper = styled.div`
   margin-left: auto;
 `;
 
-const Header = () => (
+const StyledButton = styled.button`
+  padding: 10px 20px;
+  border: none;
+  background: ${({ theme }) => theme.color.lightGrey};
+  cursor: pointer;
+  font-size: ${({ theme }) => theme.size.m};
+`;
+
+const Header = ({ logOut }) => (
   <HeaderWrapper>
     <nav>
       <List>
         <ListItem>
-          <Logo> FoodList </Logo>
+          <Logo />
         </ListItem>
         <ListItem>
           <StyledNavLink to={routes.breakfast}>Breakfast</StyledNavLink>
@@ -82,6 +86,11 @@ const Header = () => (
         <ListItem>
           <StyledNavLink to={routes.dinner}>Dinner</StyledNavLink>
         </ListItem>
+        <ListItem>
+          <StyledButton type="button" onClick={logOut}>
+            Log out
+          </StyledButton>
+        </ListItem>
       </List>
     </nav>
     <InputWrapper>
@@ -91,4 +100,12 @@ const Header = () => (
   </HeaderWrapper>
 );
 
-export default Header;
+Header.propTypes = {
+  logOut: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  logOut: () => dispatch(logOutAction()),
+});
+
+export default connect(null, mapDispatchToProps)(Header);

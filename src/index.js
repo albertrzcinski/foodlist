@@ -1,10 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import store from 'redux/store';
+import { Provider } from 'react-redux';
 import Root from 'pages/Root';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Root />
-  </React.StrictMode>,
-  document.getElementById('root'),
-);
+store.firebaseAuthIsReady.then(() => {
+  ReactDOM.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <Root />
+      </Provider>
+    </React.StrictMode>,
+    document.getElementById('root'),
+  );
+});

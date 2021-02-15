@@ -54,7 +54,7 @@ Details.propTypes = {
   ).isRequired,
 };
 
-const mapStateToProps = ({ meals }, { match }) => {
+const mapStateToProps = ({ foodlist: { meals } }, { match }) => {
   return {
     meal: meals.filter((item) => toLowerCaseWithDash(item.name) === match.params.name),
   };

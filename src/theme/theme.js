@@ -15,6 +15,7 @@ export const theme = {
     aquamarine: '#6ce9f0',
     black: 'hsl(0,0%,0%,0.7)',
     grey: 'hsl(0,0%,0%,0.3)',
+    lightGrey: 'hsl(0,0%,0%,0.05)',
     white: 'hsl(0,0%,100%)',
     red: 'hsl(0,70%,50%)',
   },
@@ -25,5 +26,6 @@ export const theme = {
     l: '2.4rem',
     xl: '3.8rem',
     xxl: '4.8rem',
+    xxxl: '5.8rem',
   },
 };

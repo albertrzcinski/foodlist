@@ -1,4 +1,12 @@
-import { ADD_ITEM, DELETE_ITEM, EDIT_ITEM } from 'redux/actionTypes';
+import {
+  ADD_ITEM,
+  DELETE_ITEM,
+  EDIT_ITEM,
+  AUTH_SUCCESS,
+  AUTH_FAILURE,
+  SIGNOUT_SUCCESS,
+  SIGNOUT_FAILURE,
+} from 'redux/actionTypes';
 
 const initialState = {
   meals: [
@@ -28,8 +36,28 @@ const initialState = {
   ],
 };
 
-const rootReducer = (state = initialState, { type, payload }) => {
+const foodlistReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case AUTH_SUCCESS:
+      return {
+        ...state,
+        authErr: null,
+      };
+    case AUTH_FAILURE:
+      return {
+        ...state,
+        authErr: payload.authErr,
+      };
+    case SIGNOUT_SUCCESS:
+      return {
+        ...state,
+        signOutErr: null,
+      };
+    case SIGNOUT_FAILURE:
+      return {
+        ...state,
+        signOutErr: payload.signOutErr,
+      };
     case ADD_ITEM:
       return {
         meals: [...state.meals, payload.meal],
@@ -62,4 +90,4 @@ const rootReducer = (state = initialState, { type, payload }) => {
   }
 };
 
-export default rootReducer;
+export default foodlistReducer;

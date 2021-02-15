@@ -1,4 +1,40 @@
-import { ADD_ITEM, DELETE_ITEM, EDIT_ITEM } from './actionTypes';
+import {
+  ADD_ITEM,
+  DELETE_ITEM,
+  EDIT_ITEM,
+  AUTH_SUCCESS,
+  AUTH_FAILURE,
+  SIGNOUT_SUCCESS,
+  SIGNOUT_FAILURE,
+} from './actionTypes';
+
+export const logIn = ({ email, password }) => (dispatch, getState, { getFirebase }) => {
+  const firebase = getFirebase();
+
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .then(() => {
+      dispatch({ type: AUTH_SUCCESS });
+    })
+    .catch((err) => {
+      dispatch({ type: AUTH_FAILURE, payload: { authErr: err } });
+    });
+};
+
+export const logOut = () => (dispatch, getState, { getFirebase }) => {
+  const firebase = getFirebase();
+
+  firebase
+    .auth()
+    .signOut()
+    .then(() => {
+      dispatch({ type: SIGNOUT_SUCCESS });
+    })
+    .catch((err) => {
+      dispatch({ type: SIGNOUT_FAILURE, payload: { signOutErr: err } });
+    });
+};
 
 export const addMeal = (content) => ({
   type: ADD_ITEM,
