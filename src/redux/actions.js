@@ -6,6 +6,8 @@ import {
   AUTH_FAILURE,
   SIGNOUT_SUCCESS,
   SIGNOUT_FAILURE,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE,
 } from './actionTypes';
 
 export const logIn = ({ email, password }) => (dispatch, getState, { getFirebase }) => {
@@ -33,6 +35,20 @@ export const logOut = () => (dispatch, getState, { getFirebase }) => {
     })
     .catch((err) => {
       dispatch({ type: SIGNOUT_FAILURE, payload: { signOutErr: err } });
+    });
+};
+
+export const register = ({ email, password }) => (dispatch, getState, { getFirebase }) => {
+  const firebase = getFirebase();
+
+  firebase
+    .auth()
+    .createUserWithEmailAndPassword(email, password)
+    .then(() => {
+      dispatch({ type: REGISTER_SUCCESS });
+    })
+    .catch((err) => {
+      dispatch({ type: REGISTER_FAILURE, payload: { registerErr: err } });
     });
 };
 
