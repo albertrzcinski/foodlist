@@ -8,6 +8,7 @@ import {
   SIGNOUT_FAILURE,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
+  ADD_ITEM_FAILURE,
 } from './actionTypes';
 
 export const logIn = ({ email, password }) => (dispatch, getState, { getFirebase }) => {
@@ -52,12 +53,33 @@ export const register = ({ email, password }) => (dispatch, getState, { getFireb
     });
 };
 
-export const addMeal = (content) => ({
-  type: ADD_ITEM,
-  payload: {
-    meal: { ...content },
-  },
-});
+export const addMeal = (content) => (dispatch, getState, { getFirestore }) => {
+  const firestore = getFirestore();
+
+  firestore
+    .collection('recipes')
+    .add({
+      ...content,
+    })
+    .then((docRef) => {
+      const { id } = docRef;
+
+      dispatch({
+        type: ADD_ITEM,
+        payload: {
+          meal: { id, ...content },
+        },
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: ADD_ITEM_FAILURE,
+        payload: {
+          createErr: err,
+        },
+      });
+    });
+};
 
 export const deleteMeal = (mealName) => ({
   type: DELETE_ITEM,

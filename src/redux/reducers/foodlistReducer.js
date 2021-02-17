@@ -8,6 +8,7 @@ import {
   SIGNOUT_FAILURE,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
+  ADD_ITEM_FAILURE,
 } from 'redux/actionTypes';
 
 const initialState = {
@@ -73,6 +74,11 @@ const foodlistReducer = (state = initialState, { type, payload }) => {
     case ADD_ITEM:
       return {
         meals: [...state.meals, payload.meal],
+      };
+    case ADD_ITEM_FAILURE:
+      return {
+        ...state,
+        createErr: payload.createErr,
       };
     case DELETE_ITEM:
       return {
