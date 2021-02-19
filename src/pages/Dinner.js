@@ -6,25 +6,42 @@ import { connect } from 'react-redux';
 import { TYPE_OF_MEALS } from 'utilities/constants';
 import { Redirect } from 'react-router-dom';
 import { routes } from 'routes';
+import { firestoreConnect, isLoaded } from 'react-redux-firebase';
+import { compose } from 'redux';
 
-const Dinner = ({ dinnerMeals, uid }) => {
+const Dinner = ({ meals, uid }) => {
   if (!uid) {
     return <Redirect to={routes.home} />;
   }
+
+  if (!isLoaded(meals)) {
+    return (
+      <DashboardTemplate>
+        <p> Loading... </p>
+      </DashboardTemplate>
+    );
+  }
+
+  const dinnerMeals = meals.filter((item) => item.type === TYPE_OF_MEALS.DINNER);
+
   return (
     <DashboardTemplate>
       <>
-        {dinnerMeals.map(({ name, desc, kcal, protein, fat, carbs }) => (
-          <Card
-            key={name}
-            name={name}
-            desc={desc}
-            kcal={kcal}
-            protein={protein}
-            fat={fat}
-            carbs={carbs}
-          />
-        ))}
+        {dinnerMeals.length > 0 ? (
+          dinnerMeals.map(({ id, name, desc, kcal, protein, fat, carbs }) => (
+            <Card
+              key={id}
+              name={name}
+              desc={desc}
+              kcal={kcal}
+              protein={protein}
+              fat={fat}
+              carbs={carbs}
+            />
+          ))
+        ) : (
+          <p> There is no dinner meals. </p>
+        )}
       </>
     </DashboardTemplate>
   );
@@ -32,7 +49,7 @@ const Dinner = ({ dinnerMeals, uid }) => {
 const stringProp = PropTypes.string.isRequired;
 
 Dinner.propTypes = {
-  dinnerMeals: PropTypes.arrayOf(
+  meals: PropTypes.arrayOf(
     PropTypes.shape({
       name: stringProp,
       desc: stringProp,
@@ -50,18 +67,23 @@ Dinner.propTypes = {
         }),
       ),
     }),
-  ),
+  ).isRequired,
   uid: PropTypes.string,
 };
 
 Dinner.defaultProps = {
-  dinnerMeals: [],
   uid: null,
 };
 
-const mapStateToProps = ({ foodlist: { meals }, firebase: { auth } }) => {
-  const dinnerMeals = meals.filter((item) => item.type === TYPE_OF_MEALS.DINNER);
-  return { dinnerMeals, uid: auth.uid };
+const mapStateToProps = ({ firestore: { ordered }, firebase: { auth } }) => {
+  return { meals: ordered.recipes, uid: auth.uid };
 };
 
-export default connect(mapStateToProps, null)(Dinner);
+export default compose(
+  firestoreConnect([
+    {
+      collection: 'recipes',
+    },
+  ]),
+  connect(mapStateToProps, null),
+)(Dinner);

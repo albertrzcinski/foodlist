@@ -1,7 +1,9 @@
 export const ADD_ITEM = 'ADD_ITEM';
 export const ADD_ITEM_FAILURE = 'ADD_ITEM_FAILURE';
 export const DELETE_ITEM = 'DELETE_ITEM';
+export const DELETE_ITEM_FAILURE = 'DELETE_ITEM_FAILURE';
 export const EDIT_ITEM = 'EDIT_ITEM';
+export const EDIT_ITEM_FAILURE = 'EDIT_ITEM_FAILURE';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAILURE = 'AUTH_FAILURE';
 export const SIGNOUT_SUCCESS = 'SIGNOUT_SUCCESS';

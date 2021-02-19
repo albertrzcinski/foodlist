@@ -9,6 +9,8 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
   ADD_ITEM_FAILURE,
+  DELETE_ITEM_FAILURE,
+  EDIT_ITEM_FAILURE,
 } from './actionTypes';
 
 export const logIn = ({ email, password }) => (dispatch, getState, { getFirebase }) => {
@@ -61,14 +63,9 @@ export const addMeal = (content) => (dispatch, getState, { getFirestore }) => {
     .add({
       ...content,
     })
-    .then((docRef) => {
-      const { id } = docRef;
-
+    .then(() => {
       dispatch({
         type: ADD_ITEM,
-        payload: {
-          meal: { id, ...content },
-        },
       });
     })
     .catch((err) => {
@@ -81,17 +78,48 @@ export const addMeal = (content) => (dispatch, getState, { getFirestore }) => {
     });
 };
 
-export const deleteMeal = (mealName) => ({
-  type: DELETE_ITEM,
-  payload: {
-    mealName,
-  },
-});
+export const deleteMeal = (mealId) => (dispatch, getState, { getFirestore }) => {
+  const firestore = getFirestore();
 
-export const editMeal = (mealName, content) => ({
-  type: EDIT_ITEM,
-  payload: {
-    mealName,
-    content,
-  },
-});
+  firestore
+    .collection('recipes')
+    .doc(mealId)
+    .delete()
+    .then(() => {
+      dispatch({
+        type: DELETE_ITEM,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: DELETE_ITEM_FAILURE,
+        payload: {
+          deleteErr: err,
+        },
+      });
+    });
+};
+
+export const editMeal = (mealId, content) => (dispatch, getState, { getFirestore }) => {
+  const firestore = getFirestore();
+
+  firestore
+    .collection('recipes')
+    .doc(mealId)
+    .update({
+      ...content,
+    })
+    .then(() => {
+      dispatch({
+        type: EDIT_ITEM,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: EDIT_ITEM_FAILURE,
+        payload: {
+          updateErr: err,
+        },
+      });
+    });
+};

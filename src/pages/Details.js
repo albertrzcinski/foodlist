@@ -3,15 +3,30 @@ import DetailsTemplate from 'templates/DetailsTemplate';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { toLowerCaseWithDash } from 'utilities/functions';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import { routes } from 'routes/index';
+import { firestoreConnect, isLoaded } from 'react-redux-firebase';
+import { compose } from 'redux';
 
-const Details = ({ meal }) => {
+const Details = ({ meals, uid }) => {
+  const { name } = useParams();
+
+  if (!uid) {
+    return <Redirect to={routes.home} />;
+  }
+
+  if (!isLoaded(meals)) {
+    return <p>Loading...</p>;
+  }
+
+  const meal = meals.filter((item) => toLowerCaseWithDash(item.name) === name);
+
   if (meal.length) {
     const [item] = meal;
 
     return (
       <DetailsTemplate
+        id={item.id}
         name={item.name}
         time={item.time}
         servings={item.servings}
@@ -32,7 +47,7 @@ const Details = ({ meal }) => {
 const stringProp = PropTypes.string.isRequired;
 
 Details.propTypes = {
-  meal: PropTypes.arrayOf(
+  meals: PropTypes.arrayOf(
     PropTypes.shape({
       name: stringProp,
       desc: stringProp,
@@ -52,12 +67,18 @@ Details.propTypes = {
       method: PropTypes.string,
     }),
   ).isRequired,
+  uid: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = ({ foodlist: { meals } }, { match }) => {
-  return {
-    meal: meals.filter((item) => toLowerCaseWithDash(item.name) === match.params.name),
-  };
+const mapStateToProps = ({ firestore: { ordered }, firebase: { auth } }) => {
+  return { meals: ordered.recipes, uid: auth.uid };
 };
 
-export default connect(mapStateToProps, null)(Details);
+export default compose(
+  firestoreConnect([
+    {
+      collection: 'recipes',
+    },
+  ]),
+  connect(mapStateToProps, null),
+)(Details);

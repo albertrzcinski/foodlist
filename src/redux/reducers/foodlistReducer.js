@@ -9,37 +9,11 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
   ADD_ITEM_FAILURE,
+  DELETE_ITEM_FAILURE,
+  EDIT_ITEM_FAILURE,
 } from 'redux/actionTypes';
 
-const initialState = {
-  meals: [
-    {
-      name: 'Makaron z kurczakiem',
-      desc: 'Bardzo dobry makaron z kurczakiem.',
-      time: '20',
-      servings: '2',
-      kcal: '850',
-      protein: '35',
-      fat: '5',
-      carbs: '80',
-      type: 'breakfast',
-      ingredients: [
-        {
-          name: 'Makaron',
-          quantity: '150g',
-        },
-        {
-          name: 'Pierś z kurczaka',
-          quantity: '170g',
-        },
-      ],
-      method: `1. Prepare ingredients.
-      2. Cook meal.`,
-    },
-  ],
-};
-
-const foodlistReducer = (state = initialState, { type, payload }) => {
+const foodlistReducer = (state = {}, { type, payload }) => {
   switch (type) {
     case AUTH_SUCCESS:
       return {
@@ -73,7 +47,8 @@ const foodlistReducer = (state = initialState, { type, payload }) => {
       };
     case ADD_ITEM:
       return {
-        meals: [...state.meals, payload.meal],
+        ...state,
+        createErr: null,
       };
     case ADD_ITEM_FAILURE:
       return {
@@ -82,27 +57,24 @@ const foodlistReducer = (state = initialState, { type, payload }) => {
       };
     case DELETE_ITEM:
       return {
-        meals: state.meals.filter((item) => item.name !== payload.mealName),
+        ...state,
+        deleteErr: null,
       };
-    case EDIT_ITEM: {
-      const [meal] = state.meals.filter((item) => item.name === payload.mealName);
-
-      if (meal) {
-        const otherMeals = state.meals.filter((item) => item.name !== payload.mealName);
-        const { content } = payload;
-        const updatedMeal = {
-          ...meal,
-          ...content,
-        };
-        return {
-          meals: [...otherMeals, updatedMeal],
-        };
-      }
-
+    case DELETE_ITEM_FAILURE:
       return {
-        meals: [...state.meals],
+        ...state,
+        deleteErr: payload.deleteErr,
       };
-    }
+    case EDIT_ITEM:
+      return {
+        ...state,
+        updateErr: null,
+      };
+    case EDIT_ITEM_FAILURE:
+      return {
+        ...state,
+        updateErr: payload.updateErr,
+      };
     default:
       return state;
   }

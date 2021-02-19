@@ -55,7 +55,7 @@ const StyledError = styled(ErrorMessage)`
     `}
 `;
 
-const AddIngredientsBox = ({ mealName, editMealFn, ingredientsProp }) => {
+const AddIngredientsBox = ({ mealId, editMealFn, ingredientsProp }) => {
   const [ingredients, setIngredients] = useState(ingredientsProp);
 
   const names = ingredients.reduce((acc, curr) => acc.concat(curr.name), []).join(' *$| *');
@@ -85,7 +85,7 @@ const AddIngredientsBox = ({ mealName, editMealFn, ingredientsProp }) => {
             name: '',
             quantity: '',
           }}
-          validationSchema={Yup.object().shape({
+          valmealIdationSchema={Yup.object().shape({
             name: Yup.string()
               .min(3, 'Too short!')
               .required('Required!')
@@ -140,7 +140,7 @@ const AddIngredientsBox = ({ mealName, editMealFn, ingredientsProp }) => {
         </Formik>
 
         {ingredients.length ? (
-          <Button onClick={() => editMealFn(mealName, { ingredients: [...ingredients] })}>
+          <Button onClick={() => editMealFn(mealId, { ingredients: [...ingredients] })}>
             Save changes
           </Button>
         ) : null}
@@ -150,7 +150,7 @@ const AddIngredientsBox = ({ mealName, editMealFn, ingredientsProp }) => {
 };
 
 AddIngredientsBox.propTypes = {
-  mealName: PropTypes.string.isRequired,
+  mealId: PropTypes.string.isRequired,
   editMealFn: PropTypes.func.isRequired,
   ingredientsProp: PropTypes.arrayOf(
     PropTypes.shape({

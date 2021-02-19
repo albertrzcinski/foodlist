@@ -33,7 +33,7 @@ const StyledFlexDiv = styled.div`
   }
 `;
 
-const ConfirmModal = ({ visible, visibleFn, onClickFn, name }) => {
+const ConfirmModal = ({ visible, visibleFn, onClickFn, id }) => {
   const history = useHistory();
   return (
     <StyledWrapper isVisible={visible}>
@@ -43,7 +43,7 @@ const ConfirmModal = ({ visible, visibleFn, onClickFn, name }) => {
         <Button
           tertiary
           onClick={() => {
-            onClickFn(name);
+            onClickFn(id);
             history.push(routes.home);
           }}
         >
@@ -58,7 +58,7 @@ ConfirmModal.propTypes = {
   visible: PropTypes.bool.isRequired,
   visibleFn: PropTypes.func.isRequired,
   onClickFn: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default ConfirmModal;

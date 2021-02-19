@@ -59,9 +59,9 @@ const Icon = styled.div`
   margin-right: 15px;
 `;
 
-const StyledButtonsWrapper = styled.div`
-  align-self: center;
-`;
+// const StyledButtonsWrapper = styled.div`
+//   align-self: center;
+// `;
 
 const StyledParagraph = styled(Paragraph)`
   line-height: 35px;
@@ -105,6 +105,7 @@ const DetailsTemplate = ({
   editMeal,
   ingredients,
   method,
+  id,
 }) => {
   const [confirmModalVisability, setConfirmModalVisability] = useState(false);
   const [textareaValue, setTextareaValue] = useState(method);
@@ -117,7 +118,7 @@ const DetailsTemplate = ({
         visible={confirmModalVisability}
         visibleFn={setConfirmModalVisability}
         onClickFn={deleteMeal}
-        name={name}
+        id={id}
       />
       <UserTemplate>
         <StyledWrapper>
@@ -130,10 +131,10 @@ const DetailsTemplate = ({
                   <Icon icon={peopleIcon}>{servings}</Icon>
                 </StyledIconWrapper>
               </StyledTitleWrapper>
-              <StyledButtonsWrapper>
+              {/* <StyledButtonsWrapper>
                 <Button>Add to shopping list</Button>
                 <Button secondary>Add to calculator</Button>
-              </StyledButtonsWrapper>
+              </StyledButtonsWrapper> */}
             </StyledFlexWrapper>
 
             <StyledImage src={photo} />
@@ -148,11 +149,7 @@ const DetailsTemplate = ({
 
             <StyledHeading sizeL>Ingredients</StyledHeading>
 
-            <AddIngredientsBox
-              mealName={name}
-              editMealFn={editMeal}
-              ingredientsProp={ingredients}
-            />
+            <AddIngredientsBox mealId={id} editMealFn={editMeal} ingredientsProp={ingredients} />
 
             <StyledHeading sizeL>Method</StyledHeading>
 
@@ -167,7 +164,7 @@ const DetailsTemplate = ({
                 onChange={handleTextareaChange}
               />
 
-              <Button onClick={() => editMeal(name, { method: textareaValue })}> Save </Button>
+              <Button onClick={() => editMeal(id, { method: textareaValue })}> Save </Button>
             </MethodWrapper>
 
             <Button tertiary onClick={() => setConfirmModalVisability(true)}>
@@ -203,11 +200,12 @@ DetailsTemplate.propTypes = {
     }),
   ),
   method: PropTypes.string,
+  id: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteMeal: (mealName) => dispatch(deleteMealAction(mealName)),
-  editMeal: (mealName, content) => dispatch(editMealAction(mealName, content)),
+  deleteMeal: (mealId) => dispatch(deleteMealAction(mealId)),
+  editMeal: (mealId, content) => dispatch(editMealAction(mealId, content)),
 });
 
 export default connect(null, mapDispatchToProps)(DetailsTemplate);
