@@ -1,5 +1,5 @@
 # Foodlist application
-This is a application for management recipes. Built with React, Redux, styled-components, Firebase also with the use Storybook and atomic design.
+This is an application for management recipes. Built with React, Redux, styled-components, Firebase also with the use Storybook and atomic design.
 
 ## Setup
 + Clone this repo to your desktop and go to it's root directory.
